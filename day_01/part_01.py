@@ -8,8 +8,4 @@ with open('input.txt', 'r') as file:
         cals = [int(cal) for cal in elf if cal != '']
         elves[elves.index(elf)] = sum(cals)
 
-    print(max(elves))
-        
-
-    
-    
+    print(max(elves))  
