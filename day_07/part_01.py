@@ -1,39 +1,62 @@
-import sys
-sys.setrecursionlimit(100000)
-
-lines = []
+from treelib import Node, Tree
+tree = Tree()
 sums = {}
 
-def solve(dir_name):
-    sum = 0
+def sum_nodes(nid):      
+    node = tree.get_node(nid)
+    summation = 0
 
-    cmd = f'$ cd {dir_name}'
+    if (len(tree.children(nid)) == 0):
+        return node.data
+    
+    for child in tree.children(node.identifier):
+        summation = summation + sum_nodes(child.identifier)
+    
+    if (summation <= 100000):
+        sums[nid] = summation
 
-    if cmd in lines:
-        start = lines.index(cmd) + 1
-        i = start + 1
-        line_is_not_command = True
-        while line_is_not_command and i < len(lines):
-            if ('$' in lines[i]):
-                line_is_not_command = False
-            else:
-                i = i + 1
-        items = lines[start+1:i]
-
-        for item in items:
-            if 'dir' in item:
-                sum = sum + solve(item.split(' ')[1])
-            else:
-                sum = sum + int(item.split(' ')[0])
-
-        sums[dir_name] = sum
-        return sum
+    return summation
 
 with open('input.txt', 'r') as file:
-    lines = [line.strip() for line in file.readlines()]
+    lines = [line.strip() for line in file.readlines()][1:]
+    tree.create_node("/", "/", data=0)
+    current_dir = "/"
     
-    solve('/')
-    print(sum(filter(lambda val: val < 100000, sums.values())))
+    for line in lines:
+        if line.split(' ')[0] == 'dir':        
+            try:    
+                tree.create_node(line.split(' ')[1], current_dir + line.split(' ')[1], parent=current_dir, data=0)
+            except:
+                continue
+            
+        elif line.split(' ')[1] == 'cd' and line.split(' ')[2] == '..':
+            parent_node = tree.parent(current_dir)
+            if (parent_node != None):
+                current_dir = parent_node.identifier
+
+        elif line.split(' ')[1] == 'cd' and line.split(' ')[2] != '..':
+            current_dir = current_dir + line.split(' ')[2]
+
+        elif line.split(' ')[0] != '$':
+            try:
+                tree.create_node(line.split(' ')[1], current_dir + line.split(' ')[1], parent=current_dir, data=int(line.split(' ')[0]))
+            except:
+                continue
+            
+    tree.show()
+    sum_nodes("/")
+    print(sum(sums.values()))
+
+   
+
+
+
+
+
+    
+    
+    
+        
 
     
 
