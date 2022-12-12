@@ -46,17 +46,3 @@ with open('input.txt', 'r') as file:
     tree.show()
     sum_nodes("/")
     print(sum(sums.values()))
-
-   
-
-
-
-
-
-    
-    
-    
-        
-
-    
-

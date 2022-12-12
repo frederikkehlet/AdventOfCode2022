@@ -47,16 +47,3 @@ with open('input.txt', 'r') as file:
     required = 30000000 - (70000000 - sums["/"])
     result = {k: v for k,v in sums.items() if v >= required}
     print(sorted(list(result.values()))[0])
-   
-
-
-
-
-
-    
-    
-    
-        
-
-    
-
