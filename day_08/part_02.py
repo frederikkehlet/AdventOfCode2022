@@ -56,11 +56,4 @@ with open('input.txt', 'r') as file:
 
             scenic_scores.append(np.prod(scores))
 
-    print(max(scenic_scores))
-                    
-
-
-
-
-
-            
+    print(max(scenic_scores))      
